@@ -1,0 +1,21 @@
+{
+    "name": "dendome/praktica2week1zad1",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "DenDOme",
+            "email": "newlifeofkirim@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4 | ^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "core/Src/",
+            "": "app/"
+        }
+    }
+}
