@@ -16,14 +16,16 @@ class Application
    private Auth $auth;
 
    public function __construct(Settings $settings)
-   {
-       $this->settings = $settings;
-       $this->route = new Route($this->settings->getRootPath());
-       $this->dbManager = new Capsule();
-       $this->auth = new $this->settings->app['auth'];
-       $this->dbRun();
-       $this->auth::init(new $this->settings->app['identity']);
-   }
+    {
+        $this->settings = $settings;
+        $this->route = Route::single()->setPrefix($this->settings->getRootPath());
+        $this->dbManager = new Capsule();
+        $this->auth = new $this->settings->app['auth'];
+
+        $this->dbRun();
+        $this->auth::init(new $this->settings->app['identity']);
+    }
+
 
    public function __get($key)
 {
