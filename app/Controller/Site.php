@@ -6,6 +6,8 @@ use Src\View;
 use Src\Request;
 use Model\User;
 use Src\Auth\Auth;
+use Model\Employee;
+use Model\Department;
 
 class Site
 {
@@ -18,8 +20,8 @@ class Site
             return (new View())->render('site.post', ['posts' => $posts]);
         } else {
             $posts = Post::all();
-            return (new View())->render('site.post', ['posts' => $posts]);
         }
+        return (new View())->render('site.post', ['posts' => $posts]);
     }
 
    public function hello(): string
@@ -30,7 +32,7 @@ class Site
    public function signup(Request $request): string
     {
         if ($request->method === 'POST' && User::create($request->all())) {
-            app()->route->redirect('/go');
+            app()->route->redirect('/hello');
         }
         return new View('site.signup');
     }
@@ -52,4 +54,27 @@ class Site
         app()->route->redirect('/hello');
     }
 
+    public function employee(Request $request): string 
+    {
+        $departments = Department::all();
+        $users = User::all();
+        if($request->method === 'POST' && Employee::create($request->all())){
+            app()->route->redirect('/employee');
+        }
+        return new View('site.employee', ['departments' => $departments , 'users' => $users]);
+    }
+
+    public function department(Request $request): string 
+    {
+        if($request->method === 'POST' && Department::create($request->all())){
+            app()->route->redirect('/department');
+        }
+        return new View('site.department');
+    }
+
+    public function employee_list(): string
+    {   
+        $employees = Employee::all();
+        return new View('site.employee-list', ['employees' => $employees]);
+    }
 }

@@ -19,7 +19,7 @@ class Auth
    public static function login(IdentityInterface $user): void
    {
        self::$user = $user;
-       Session::set('id', self::$user->getId());
+       Session::set('UserRoleID', self::$user->getId());
    }
 
    public static function attempt(array $credentials): bool
@@ -33,7 +33,7 @@ class Auth
 
    public static function user()
    {
-       $id = Session::get('id') ?? 0;
+       $id = Session::get('UserRoleID') ?? 0;
        return self::$user->findIdentity($id);
    }
 
@@ -47,7 +47,7 @@ class Auth
 
    public static function logout(): bool
    {
-       Session::clear('id');
+       Session::clear('UserRoleID');
        return true;
    }
 

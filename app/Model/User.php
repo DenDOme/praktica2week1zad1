@@ -14,25 +14,29 @@ class User extends Model implements IdentityInterface
    protected $fillable = [
        'name',
        'login',
-       'password'
+       'password',
+       'role'
    ];
+
+   protected $primaryKey = 'UserRoleID';
 
    protected static function booted()
    {
        static::created(function ($user) {
            $user->password = md5($user->password);
+           $user->role = 'employee';
            $user->save();
        });
    }
 
    public function findIdentity(int $id)
    {
-       return self::where('id', $id)->first();
+       return self::where('UserRoleID', $id)->first();
    }
 
    public function getId(): int
    {
-       return $this->id;
+       return $this->UserRoleID;
    }
 
    public function attemptIdentity(array $credentials)

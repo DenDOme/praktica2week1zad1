@@ -16,13 +16,16 @@
            ?>
            <a href="<?= app()->route->getUrl('/login') ?>">Вход</a>
            <a href="<?= app()->route->getUrl('/signup') ?>">Регистрация</a>
-       <?php
+           <?php
        else:
-           ?>
+        ?>
            <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->name ?>)</a>
-       <?php
+           <a href="<?= app()->route->getUrl('/employee') ?>">Создать сотрудника</a>
+           <a href="<?= app()->route->getUrl('/department') ?>">Создать Департамент</a>
+           <?php
        endif;
        ?>
+       <a href="<?= app()->route->getUrl('/employee-list') ?>">Список сотрудников</a>
    </nav>
 </header>
 <main>
