@@ -7,9 +7,9 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>Pop it MVC</title>
 </head>
-<body>
-<header>
-   <nav>
+<body class="">
+<header class="bg-black">
+   <nav class="flex items-center justify-between text-white max-w-3xl mx-auto py-5 uppercase">
        <a href="<?= app()->route->getUrl('/hello') ?>">Главная</a>
        <?php
        if (!app()->auth::check()):
@@ -31,6 +31,6 @@
 <main>
    <?= $content ?? '' ?>
 </main>
-
+<script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>
