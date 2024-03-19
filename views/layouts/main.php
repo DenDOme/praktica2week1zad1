@@ -9,22 +9,21 @@
 </head>
 <body class="">
 <header class="bg-black">
-   <nav class="flex items-center justify-between text-white max-w-3xl mx-auto py-5 uppercase">
+   <nav class="flex items-center justify-between text-white max-w-[1200px] mx-auto py-5 uppercase">
        <a href="<?= app()->route->getUrl('/hello') ?>">Главная</a>
-       <?php
-       if (!app()->auth::check()):
-           ?>
+         <?php if (!app()->auth::check()): ?>
            <a href="<?= app()->route->getUrl('/login') ?>">Вход</a>
            <a href="<?= app()->route->getUrl('/signup') ?>">Регистрация</a>
-           <?php
-       else:
-        ?>
-           <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->name ?>)</a>
-           <a href="<?= app()->route->getUrl('/employee') ?>">Создать сотрудника</a>
-           <a href="<?= app()->route->getUrl('/department') ?>">Создать Департамент</a>
-           <?php
-       endif;
-       ?>
+         <?php else: ?>
+            <?php if(!app()->auth::checkEmp()): ?>
+               <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->name ?>)</a>
+            <?php else: ?>
+               <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->name ?>)</a>
+               <a href="<?= app()->route->getUrl('/employee') ?>">Создать сотрудника</a>
+               <a href="<?= app()->route->getUrl('/department') ?>">Создать Департамент</a>
+               <a href="<?= app()->route->getUrl('/position') ?>">Создать Должность</a>
+            <?php endif; ?>
+         <?php endif; ?>
        <a href="<?= app()->route->getUrl('/employee-list') ?>">Список сотрудников</a>
    </nav>
 </header>

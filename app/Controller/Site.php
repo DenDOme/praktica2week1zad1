@@ -8,6 +8,7 @@ use Model\User;
 use Src\Auth\Auth;
 use Model\Employee;
 use Model\Department;
+use Model\Position;
 
 class Site
 {
@@ -57,11 +58,21 @@ class Site
     public function employee(Request $request): string 
     {
         $departments = Department::all();
-        $users = User::all();
+        $positions = Position::all();
+        $users = User::where('role', 'quest')->get();
         if($request->method === 'POST' && Employee::create($request->all())){
+            $temp = $request->all();
+            $id = $temp['UserRoleID'];
+            $changeUser = User::where('UserRoleID', $id)->first();
+    
+            if ($changeUser) {
+                $changeUser->role = 'employee';
+                $changeUser->save();
+            }
+
             app()->route->redirect('/employee');
         }
-        return new View('site.employee', ['departments' => $departments , 'users' => $users]);
+        return new View('site.employee', ['departments' => $departments , 'positions' => $positions, 'users' => $users]);
     }
 
     public function department(Request $request): string 
@@ -70,6 +81,14 @@ class Site
             app()->route->redirect('/department');
         }
         return new View('site.department');
+    }
+
+    public function position(Request $request): string 
+    {
+        if($request->method === 'POST' && Position::create($request->all())){
+            app()->route->redirect('/position');
+        }
+        return new View('site.position');
     }
 
     public function employee_list(Request $request): string

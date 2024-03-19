@@ -17,7 +17,7 @@ class Employee extends Model
        'Gender',
        'DateOfBirth',
        'Address',
-       'Position',
+       'PositionID',
        'DepartmentID',
        'UserRoleID'
    ];

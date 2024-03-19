@@ -13,7 +13,14 @@
    </label>
    <label class="flex flex-col gap-1 items-center">Дата рождения<input class="h-10 w-60 bg-gray-200" type="date" name="DateOfBirth"></label>
    <label class="flex flex-col gap-1 items-center">Адрес<input class="h-10 w-60 bg-gray-200" type="text" name="Address"></label>
-   <label class="flex flex-col gap-1 items-center">Прописка<input class="h-10 w-60 bg-gray-200" type="text" name="Position"></label>
+   <label class="flex flex-col gap-1 items-center">Сотрудники
+      <select class="h-10 w-60 bg-gray-200" name="PositionID">
+         <option value="">Выберите должность</option>
+         <?php foreach($positions as $position): ?>
+            <option value="<?= $position->getId() ?>"><?= $position->PositionName ?></option>
+         <?php endforeach; ?>
+      </select>
+   </label>
    <label class="flex flex-col gap-1 items-center">Отдел
       <select class="h-10 w-60 bg-gray-200" name="DepartmentID">
          <option value="">Выберите отдел</option>
@@ -22,13 +29,14 @@
          <?php endforeach; ?>
       </select>
    </label>
-   <label class="flex flex-col gap-1 items-center">Сотрудники
+   <label class="flex flex-col gap-1 items-center">Пользователи
       <select class="h-10 w-60 bg-gray-200" name="UserRoleID">
-         <option value="">Выберите сотрудника</option>
+         <option value="">Выберите пользователя</option>
          <?php foreach($users as $user): ?>
             <option value="<?= $user->getId() ?>"><?= $user->name ?></option>
          <?php endforeach; ?>
       </select>
    </label>
+   
    <button class="bg-blue-500 w-60 h-10 text-white text-xl font-bold">Зарегистрироваться</button>
 </form>

@@ -20,6 +20,7 @@ class Auth
    {
        self::$user = $user;
        Session::set('UserRoleID', self::$user->getId());
+       Session::set('role', self::$user->role);
    }
 
    public static function attempt(array $credentials): bool
@@ -43,6 +44,15 @@ class Auth
            return true;
        }
        return false;
+   }
+
+   public static function checkEmp()
+   {
+        $role = Session::get('role') ?? 0;
+        if($role === 'admin' || $role === 'employee'){
+            return true;
+        }
+        return false;
    }
 
    public static function logout(): bool

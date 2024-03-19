@@ -23,10 +23,8 @@
             <div class="flex flex-col gap-2 items-center">Пол <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->Gender ?></p></div>
             <div class="flex flex-col gap-2 items-center">Дата рождения <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->DateOfBirth ?></p></div>
             <div class="flex flex-col gap-2 items-center">Адрес <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->Address ?></p></div>
-            <div class="flex flex-col gap-2 items-center">Должность <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->Position ?></p></div>
+            <div class="flex flex-col gap-2 items-center">Должность <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->PositionID ?></p></div>
             <div class="flex flex-col gap-2 items-center">Департамент <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->DepartmentID ?></p></div>
-            <div class="flex flex-col gap-2 items-center">Сотрудники <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->UserRoleID ?></p></div>
-            <button class="h-10 w-40 bg-blue-500 text-center flex items-center justify-center text-white mt-5 font-bold text-xl"> Редактировать</button>
         </div>
         <br>
         <br>
