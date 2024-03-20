@@ -3,5 +3,6 @@
 return [
     'root' => 'pop-it-mvc',
     'routes' => 'routes',
-    'views' => 'views'
+    'views' => 'views',
+    'uploads' => 'uploads'
 ];

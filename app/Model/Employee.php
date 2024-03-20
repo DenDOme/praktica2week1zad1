@@ -19,7 +19,8 @@ class Employee extends Model
        'Address',
        'PositionID',
        'DepartmentID',
-       'UserRoleID'
+       'UserRoleID',
+       'Image'
    ];
 
    protected $primaryKey = 'EmployeeID';
