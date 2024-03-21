@@ -1,23 +1,22 @@
-<div class="flex items-center max-w-4xl mx-auto justify-between mt-5">
-    <form method="post" class="flex items-center gap-1">
+<div class="flex items-center max-w-[1200px] mx-auto justify-between mt-12 bg-gray-300 p-8">
+    <form method="post" class="flex items-center gap-4">
         <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
-        <select class="h-10 w-60 bg-gray-200" name="DepartmentID">
+        <select class="h-10 w-60 bg-gray-500 text-white px-2" name="DepartmentID">
             <option value="">Все сотрудники</option>
             <?php foreach($departments as $department): ?>
                 <option value="<?= $department->getId() ?>"><?= $department->DepartmentName ?></option>
             <?php endforeach; ?>
         </select>
-        <button class="bg-blue-500 w-40 h-10 text-white font-bold">Применить</button>
+        <button class="bg-blue-500 w-40 h-10 text-white font-bold">ПРИМЕНИТЬ</button>
     </form>
-    <div class="h-10 w-40 bg-gray-200 flex items-center justify-center">
+    <div class="h-10 w-[180px] bg-gray-500 text-white flex items-center justify-center">
         Средний возраст : <?= $srvozrast ?>
     </div>
 </div>
-<h1 class="text-center text-4xl">Все сотрудники</h1>
-<div class="max-w-[1200px] mx-auto">
-    <div class="flex gap-5 mt-5">
+<div class="max-w-[1200px] mx-auto mt-10">
+    <div class="flex justify-around mt-5 flex-wrap">
         <?php foreach($employees as $employee): ?>
-        <div class="max-w-xs p-5 w-full rounded-3xl flex flex-col items-center border-2 border-gray-500 flex-wrap">
+        <div class="max-w-xs p-5 w-full flex flex-col items-center bg-gray-300">
             <div class="flex flex-col gap-2 items-center">Фото
                 <img src="<?= $employee->Image ?>" alt="Photo" class="h-40 w-40 object-cover">
             </div>
@@ -27,11 +26,9 @@
             <div class="flex flex-col gap-2 items-center">Пол <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->Gender ?></p></div>
             <div class="flex flex-col gap-2 items-center">Дата рождения <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->DateOfBirth ?></p></div>
             <div class="flex flex-col gap-2 items-center">Адрес <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->Address ?></p></div>
-            <div class="flex flex-col gap-2 items-center">Должность <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->PositionID ?></p></div>
-            <div class="flex flex-col gap-2 items-center">Департамент <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->DepartmentID ?></p></div>
+            <div class="flex flex-col gap-2 items-center">Должность <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->PositionName ?></p></div>
+            <div class="flex flex-col gap-2 items-center">Департамент <p class="h-10 w-40 bg-gray-500 text-center flex items-center justify-center text-white"><?= $employee->DepartmentName ?></p></div>
         </div>
-        <br>
-        <br>
         <?php endforeach; ?>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<h2 class="text-center text-4xl">Регистрация нового Департамента</h2>
+<h2 class="text-center text-4xl my-12">Регистрация новый Должности</h2>
 <h3><?= $message ?? ''; ?></h3>
 <form method="post" class="flex flex-col items-center max-w-xs border-2 border-blue-700 rounded-xl mx-auto mt-5 p-5 gap-2.5">
    <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>

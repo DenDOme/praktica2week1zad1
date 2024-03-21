@@ -1,4 +1,4 @@
-<h2 class="text-center text-4xl">Авторизация</h2>
+<h2 class="text-center text-4xl my-12">Авторизация</h2>
 <h3><?= $message ?? ''; ?></h3>
 
 <h3><?= app()->auth->user()->name ?? ''; ?></h3>

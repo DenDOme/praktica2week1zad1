@@ -120,11 +120,13 @@ class Site
             $image_name = $image['name'];
             $image_tmp = $image['tmp_name'] ;
             $img_ex = pathinfo($image_name, PATHINFO_EXTENSION);
-            $new_img_name = uniqid("IMG-",true) . '.' . $img_ex;
-            move_uploaded_file($image_tmp, $new_img_name); 
+
+            $new_path = 'uploads/';
+            $new_img_name = uniqid("IMG-", true) . '.' . $img_ex;
+            move_uploaded_file($image_tmp, $new_path . $new_img_name);
 
             $employeeData = $request->all();
-            $employeeData['Image'] = $new_img_name;
+            $employeeData['Image'] = $new_path . $new_img_name;
 
             if (Employee::create($employeeData)) {
                 $temp = $request->all();
@@ -183,53 +185,65 @@ class Site
         return new View('site.position');
     }
 
-    public function employee_list(Request $request): string
-    {   
+        public function employee_list(Request $request): string
+        {   
 
-        $departments = Department::all();
-        
-        function __calculateAge($employees){
-            $srvozrast = 0;
-            $i = 0;
-            foreach ($employees as $employee) {
-                $dateOfBirth = $employee->DateOfBirth;
-                $birthDate = new \DateTime($dateOfBirth);
-                $currentDate = new \DateTime();
-                $age = $currentDate->diff($birthDate)->y;
-                $srvozrast += $age;
-                $i += 1;
+            $departments = Department::all();
+            
+            function loadNames($employees)
+            {
+                foreach($employees as $emp){
+                    $positionID = $emp->PositionID;
+                    $positionName = Position::find($positionID);
+                    $emp->PositionName = $positionName->PositionName;
+    
+                    $departmentID = $emp->DepartmentID;
+                    $departmentName = Department::find($departmentID);
+                    $emp->DepartmentName = $departmentName->DepartmentName;
+                }
+                return $employees;
             }
-            if($i === 0){
-                return 0;
-            }
-            $srvozrast = $srvozrast / $i;
-            return $srvozrast;
-        }
 
-        if($request->method === 'POST'){
-            $temp = $request->all();
-            $id = $temp['DepartmentID'];
-            if (!empty($id)) {
-                app()->route->redirect('/employee-list?id=' . $id);
+            function __calculateAge($employees){
+                $srvozrast = 0;
+                $i = 0;
+                foreach ($employees as $employee) {
+                    $dateOfBirth = $employee->DateOfBirth;
+                    $birthDate = new \DateTime($dateOfBirth);
+                    $currentDate = new \DateTime();
+                    $age = $currentDate->diff($birthDate)->y;
+                    $srvozrast += $age;
+                    $i += 1;
+                }
+                if($i === 0){
+                    return 0;
+                }
+                $srvozrast = $srvozrast / $i;
+                return $srvozrast;
+            }
+
+            if($request->method === 'POST'){
+                $temp = $request->all();
+                $id = $temp['DepartmentID'];
+                if (!empty($id)) {
+                    app()->route->redirect('/employee-list?id=' . $id);
+                } else {
+                    app()->route->redirect('/employee-list');
+                }
+            }
+
+            if (array_key_exists('id', $request->all())) {
+                $id = $request->id;
+                $employees = Employee::where('DepartmentID', $id)->get();
+                $srvozrast = __calculateAge($employees);
+                $employees = loadNames($employees);
+                return (new View())->render('site.employee-list', ['employees' => $employees, 'departments' => $departments, 'srvozrast' => $srvozrast]);
             } else {
-                app()->route->redirect('/employee-list');
+                $employees = Employee::all();
+                $srvozrast = __calculateAge($employees);
             }
+
+            $employees = loadNames($employees);
+            return new View('site.employee-list', ['employees' => $employees, 'departments' => $departments, 'srvozrast' => $srvozrast]);
         }
-
-        if (array_key_exists('id', $request->all())) {
-            $id = $request->id;
-            $employees = Employee::where('DepartmentID', $id)->get();
-
-            $srvozrast = __calculateAge($employees);
-            return (new View())->render('site.employee-list', ['employees' => $employees, 'departments' => $departments, 'srvozrast' => $srvozrast]);
-        } else {
-            $employees = Employee::all();
-            $srvozrast = __calculateAge($employees);
-        }
-
-
-
-
-        return new View('site.employee-list', ['employees' => $employees, 'departments' => $departments, 'srvozrast' => $srvozrast]);
-    }
 }
