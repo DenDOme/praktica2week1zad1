@@ -335,7 +335,7 @@ class Site
             $name = $temp['Username'];
 
 
-            $employees = Employee::where('FirstName', $name)->get();
+            $employees = Employee::where('FirstName', 'LIKE', "%$name%")->get();
             $employees = loadNames($employees);
             return new View('site.employee-find', ['message' => '', 'employees' => $employees]);
         }
