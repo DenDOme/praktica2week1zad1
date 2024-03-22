@@ -15,6 +15,14 @@
    </label>
    <label class="flex flex-col gap-1 items-center">Дата рождения<input class="h-10 w-60 bg-gray-200" type="date" name="DateOfBirth"></label>
    <label class="flex flex-col gap-1 items-center">Адрес<input class="h-10 w-60 bg-gray-200" type="text" name="Address"></label>
+   <label class="flex flex-col gap-1 items-center">Состав
+      <select class="h-10 w-60 bg-gray-200" name="CompoundID">
+         <option value="">Выберите состав</option>
+         <?php foreach($compounds as $compound): ?>
+            <option value="<?= $compound->getId() ?>"><?= $compound->CompoundName ?></option>
+         <?php endforeach; ?>
+      </select>
+   </label>
    <label class="flex flex-col gap-1 items-center">Сотрудники
       <select class="h-10 w-60 bg-gray-200" name="PositionID">
          <option value="">Выберите должность</option>

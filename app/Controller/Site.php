@@ -10,6 +10,7 @@ use Model\Employee;
 use Model\Department;
 use Model\Position;
 use Src\Validator\Validator;
+use Model\Compound;
 
 class Site
 {
@@ -94,6 +95,7 @@ class Site
     {
         $departments = Department::all();
         $positions = Position::all();
+        $compounds = Compound::all();
         $users = User::where('role', 'quest')->get();
         if($request->method === 'POST'){
             $validator = new Validator($request->all(), [
@@ -103,6 +105,7 @@ class Site
                 'Gender' => ['required'],
                 'DateOfBirth' => ['required', 'date'],
                 'Address' => ['required'],
+                'CompoundID' => ['required'],
                 'PositionID' => ['required'],
                 'DepartmentID' => ['required'],
                 'UserRoleID' => ['required'],
@@ -113,7 +116,7 @@ class Site
             ]);
 
             if($validator->fails()){
-                return new View('site.employee', ['departments' => $departments , 'positions' => $positions, 'users' => $users, 'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+                return new View('site.employee', ['departments' => $departments, 'compounds' => $compounds , 'positions' => $positions, 'users' => $users, 'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
             }
 
             $image = $request->file('Image');
@@ -141,7 +144,7 @@ class Site
             }
 
         }
-        return new View('site.employee', ['departments' => $departments , 'positions' => $positions, 'users' => $users]);
+        return new View('site.employee', ['departments' => $departments , 'compounds' => $compounds , 'positions' => $positions, 'users' => $users]);
     }
 
     public function department(Request $request): string 
@@ -185,65 +188,114 @@ class Site
         return new View('site.position');
     }
 
-        public function employee_list(Request $request): string
-        {   
+    public function compound(Request $request): string
+    {
+        if($request->method === 'POST'){
+            $validator = new Validator($request->all(), [
+                'CompoundName' => ['required'],
+            ] , [
+                'required' => 'Поле : field пусто',
+            ]);
 
-            $departments = Department::all();
-            
-            function loadNames($employees)
-            {
-                foreach($employees as $emp){
-                    $positionID = $emp->PositionID;
-                    $positionName = Position::find($positionID);
-                    $emp->PositionName = $positionName->PositionName;
-    
-                    $departmentID = $emp->DepartmentID;
-                    $departmentName = Department::find($departmentID);
-                    $emp->DepartmentName = $departmentName->DepartmentName;
-                }
-                return $employees;
+            if($validator->fails()){
+                return new View('site.compound', ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
             }
 
-            function __calculateAge($employees){
-                $srvozrast = 0;
-                $i = 0;
-                foreach ($employees as $employee) {
-                    $dateOfBirth = $employee->DateOfBirth;
-                    $birthDate = new \DateTime($dateOfBirth);
-                    $currentDate = new \DateTime();
-                    $age = $currentDate->diff($birthDate)->y;
-                    $srvozrast += $age;
-                    $i += 1;
-                }
-                if($i === 0){
-                    return 0;
-                }
-                $srvozrast = $srvozrast / $i;
-                return $srvozrast;
+            if(Compound::create($request->all())){
+                app()->route->redirect('/compound');
             }
-
-            if($request->method === 'POST'){
-                $temp = $request->all();
-                $id = $temp['DepartmentID'];
-                if (!empty($id)) {
-                    app()->route->redirect('/employee-list?id=' . $id);
-                } else {
-                    app()->route->redirect('/employee-list');
-                }
-            }
-
-            if (array_key_exists('id', $request->all())) {
-                $id = $request->id;
-                $employees = Employee::where('DepartmentID', $id)->get();
-                $srvozrast = __calculateAge($employees);
-                $employees = loadNames($employees);
-                return (new View())->render('site.employee-list', ['employees' => $employees, 'departments' => $departments, 'srvozrast' => $srvozrast]);
-            } else {
-                $employees = Employee::all();
-                $srvozrast = __calculateAge($employees);
-            }
-
-            $employees = loadNames($employees);
-            return new View('site.employee-list', ['employees' => $employees, 'departments' => $departments, 'srvozrast' => $srvozrast]);
         }
+        return new View('site.compound');
+    }
+
+    public function employee_list(Request $request): string
+    {   
+        $departments = Department::all();
+        $compounds = Compound::all();
+        $employees = Employee::all();
+        function loadNames($employees)
+        {
+            foreach($employees as $emp){
+                $positionID = $emp->PositionID;
+                $positionName = Position::find($positionID);
+                $emp->PositionName = $positionName->PositionName;
+
+                $departmentID = $emp->DepartmentID;
+                $departmentName = Department::find($departmentID);
+                $emp->DepartmentName = $departmentName->DepartmentName;
+
+                $compoundID = $emp->CompoundID;
+                $compoundName = Compound::find($compoundID);
+                $emp->CompoundName = $compoundName->CompoundName;
+            }
+            return $employees;
+        }
+
+        function __calculateAge($employees){
+            $srvozrast = 0;
+            $i = 0;
+            foreach ($employees as $employee) {
+                $dateOfBirth = $employee->DateOfBirth;
+                $birthDate = new \DateTime($dateOfBirth);
+                $currentDate = new \DateTime();
+                $age = $currentDate->diff($birthDate)->y;
+                $srvozrast += $age;
+                $i += 1;
+            }
+            if($i === 0){
+                return 0;
+            }
+            $srvozrast = $srvozrast / $i;
+            return $srvozrast;
+        }
+
+        if($request->method === 'POST'){
+            $temp = $request->all();
+            $departmentid = $temp['DepartmentID'];
+            $compoundtid = $temp['CompoundID'];
+            
+            if (!empty($departmentid) && !empty($compoundtid)) {
+                app()->route->redirect('/employee-list?department=' . $departmentid . '&compound=' . $compoundtid);
+            } elseif (!empty($departmentid)){
+                app()->route->redirect('/employee-list?department=' . $departmentid);
+            }  elseif (!empty($compoundtid)){
+                app()->route->redirect('/employee-list?compound=' . $compoundtid);
+            } 
+            else {
+                app()->route->redirect('/employee-list');
+            }
+        }
+        if (array_key_exists('department', $request->all()) && array_key_exists('compound', $request->all())) {
+            $department_id = $request->department;
+            $compound_id = $request->compound;
+            $employees = Employee::where('DepartmentID', $department_id)->where('CompoundID', $compound_id)->get();  
+
+            $srvozrast = __calculateAge($employees);
+            $employees = loadNames($employees);
+            
+            return (new View())->render('site.employee-list', ['employees' => $employees, 'compounds' => $compounds, 'departments' => $departments, 'srvozrast' => $srvozrast]);
+        } elseif(array_key_exists('department', $request->all())){
+            $department_id = $request->department;
+            $employees = Employee::where('DepartmentID', $department_id)->get();  
+
+            $srvozrast = __calculateAge($employees);
+            $employees = loadNames($employees);
+            
+            return (new View())->render('site.employee-list', ['employees' => $employees, 'compounds' => $compounds, 'departments' => $departments, 'srvozrast' => $srvozrast]);
+        } elseif(array_key_exists('compound', $request->all())){
+            $compoun_id = $request->compound;
+            $employees = Employee::where('CompoundID', $compoun_id)->get();  
+
+            $srvozrast = __calculateAge($employees);
+            $employees = loadNames($employees);
+            
+            return (new View())->render('site.employee-list', ['employees' => $employees, 'compounds' => $compounds, 'departments' => $departments, 'srvozrast' => $srvozrast]);
+        } else {
+            $employees = Employee::all();
+            $srvozrast = __calculateAge($employees);
+        }
+        $srvozrast = __calculateAge($employees);
+        $employees = loadNames($employees);
+        return new View('site.employee-list', ['employees' => $employees, 'departments' => $departments, 'compounds' => $compounds, 'srvozrast' => $srvozrast]);
+    }
 }

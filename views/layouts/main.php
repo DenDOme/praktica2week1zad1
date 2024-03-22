@@ -22,6 +22,7 @@
                <a href="<?= app()->route->getUrl('/employee') ?>">Создать сотрудника</a>
                <a href="<?= app()->route->getUrl('/department') ?>">Создать Департамент</a>
                <a href="<?= app()->route->getUrl('/position') ?>">Создать Должность</a>
+               <a href="<?= app()->route->getUrl('/compound') ?>">Создать Состав</a>
             <?php endif; ?>
          <?php endif; ?>
        <a href="<?= app()->route->getUrl('/employee-list') ?>">Список сотрудников</a>
