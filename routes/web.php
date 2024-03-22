@@ -9,6 +9,7 @@ Route::add(['GET', 'POST'], '/department', [Controller\Site::class, 'department'
 Route::add(['GET', 'POST'], '/position', [Controller\Site::class, 'position'])->middleware('role');
 Route::add('GET', '/logout', [Controller\Site::class, 'logout']);
 Route::add(['GET', 'POST'], '/employee-list', [Controller\Site::class, 'employee_list']);
+Route::add(['GET', 'POST'], '/employee-find', [Controller\Site::class, 'employee_find']);
 Route::add(['GET', 'POST'], '/compound', [Controller\Site::class, 'compound'])->middleware('role');
 
 ?>

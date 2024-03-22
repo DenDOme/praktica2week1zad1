@@ -298,4 +298,48 @@ class Site
         $employees = loadNames($employees);
         return new View('site.employee-list', ['employees' => $employees, 'departments' => $departments, 'compounds' => $compounds, 'srvozrast' => $srvozrast]);
     }
+
+    public function employee_find(Request $request): string
+    {
+        $employees = Employee::all();
+        function loadNames($employees)
+        {
+            foreach($employees as $emp){
+                $positionID = $emp->PositionID;
+                $positionName = Position::find($positionID);
+                $emp->PositionName = $positionName->PositionName;
+
+                $departmentID = $emp->DepartmentID;
+                $departmentName = Department::find($departmentID);
+                $emp->DepartmentName = $departmentName->DepartmentName;
+
+                $compoundID = $emp->CompoundID;
+                $compoundName = Compound::find($compoundID);
+                $emp->CompoundName = $compoundName->CompoundName;
+            }
+            return $employees;
+        }
+
+        if($request->method === 'POST'){
+            $validator = new Validator($request->all(), [
+                'Username' => ['required'],
+            ], [
+                'required' => 'Поле : field пусто',
+            ]);
+
+            if($validator->fails()){
+                return new View('site.employee-find', ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE), 'employees' => $employees]);
+            }
+            
+            $temp = $request->all();
+            $name = $temp['Username'];
+
+
+            $employees = Employee::where('FirstName', $name)->get();
+            $employees = loadNames($employees);
+            return new View('site.employee-find', ['message' => '', 'employees' => $employees]);
+        }
+        $employees = loadNames($employees);
+        return new View('site.employee-find', ['message' => '', 'employees' => $employees]);
+    }
 }

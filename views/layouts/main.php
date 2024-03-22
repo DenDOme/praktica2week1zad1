@@ -26,6 +26,7 @@
             <?php endif; ?>
          <?php endif; ?>
        <a href="<?= app()->route->getUrl('/employee-list') ?>">Список сотрудников</a>
+       <a href="<?= app()->route->getUrl('/employee-find') ?>">Найти сотрудника</a>
    </nav>
 </header>
 <main>

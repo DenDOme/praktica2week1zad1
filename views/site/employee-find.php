@@ -1,23 +1,9 @@
 <div class="flex items-center max-w-[1200px] mx-auto justify-between mt-12 bg-gray-300 p-8">
     <form method="post" class="flex items-center gap-4">
         <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
-        <select class="h-10 w-60 bg-gray-500 text-white px-2" name="DepartmentID">
-            <option value="">Все сотрудники</option>
-            <?php foreach($departments as $department): ?>
-                <option value="<?= $department->getId() ?>"><?= $department->DepartmentName ?></option>
-            <?php endforeach; ?>
-        </select>
-        <select class="h-10 w-60 bg-gray-500 text-white px-2" name="CompoundID">
-            <option value="">Все составы</option>
-            <?php foreach($compounds as $compound): ?>
-                <option value="<?= $compound->getId() ?>"><?= $compound->CompoundName ?></option>
-            <?php endforeach; ?>
-        </select>
+        <input type="text" placeholder = "username" class="h-10 w-60 bg-gray-500 text-white px-2" name="Username">
         <button class="bg-blue-500 w-40 h-10 text-white font-bold">ПРИМЕНИТЬ</button>
     </form>
-    <div class="h-10 w-[180px] bg-gray-500 text-white flex items-center justify-center">
-        Средний возраст : <?= $srvozrast ?>
-    </div>
 </div>
 
 <div class="max-w-[1200px] mx-auto mt-10">
