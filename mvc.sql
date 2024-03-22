@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Мар 21 2024 г., 04:35
+-- Время создания: Мар 22 2024 г., 05:59
 -- Версия сервера: 10.4.32-MariaDB
 -- Версия PHP: 8.2.12
 
@@ -20,6 +20,24 @@ SET time_zone = "+00:00";
 --
 -- База данных: `mvc`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `compounds`
+--
+
+CREATE TABLE `compounds` (
+  `CompoundID` int(11) NOT NULL,
+  `CompoundName` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Дамп данных таблицы `compounds`
+--
+
+INSERT INTO `compounds` (`CompoundID`, `CompoundName`) VALUES
+(1, 'aaa');
 
 -- --------------------------------------------------------
 
@@ -60,6 +78,7 @@ CREATE TABLE `employees` (
   `DepartmentID` int(11) NOT NULL,
   `UserRoleID` int(11) NOT NULL,
   `PositionID` int(11) NOT NULL,
+  `CompoundID` int(11) NOT NULL,
   `Image` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -67,9 +86,9 @@ CREATE TABLE `employees` (
 -- Дамп данных таблицы `employees`
 --
 
-INSERT INTO `employees` (`EmployeeID`, `FirstName`, `LastName`, `MiddleName`, `Gender`, `DateOfBirth`, `Address`, `DepartmentID`, `UserRoleID`, `PositionID`, `Image`) VALUES
-(44, 'a', 'a', 'a', 'Male', '2024-03-01', 'a', 2, 22, 1, 'IMG-65fb01adda3c49.82703028.png'),
-(45, 'a', 'a', 'a', 'Male', '2024-03-01', 'awd', 1, 12, 1, 'IMG-65fb022a325e59.52522848.png');
+INSERT INTO `employees` (`EmployeeID`, `FirstName`, `LastName`, `MiddleName`, `Gender`, `DateOfBirth`, `Address`, `DepartmentID`, `UserRoleID`, `PositionID`, `CompoundID`, `Image`) VALUES
+(55, 'uiuhiuh', 'ihuih', 'iuhiuh', 'Male', '2024-03-01', 'iojoiad', 1, 28, 1, 1, 'uploads/IMG-65fd07394c6964.95569975.png'),
+(56, 'ааа', 'а', 'п', 'Male', '2024-03-01', 'ааа', 3, 29, 1, 1, 'uploads/IMG-65fd09c965bc92.98841510.png');
 
 -- --------------------------------------------------------
 
@@ -131,13 +150,19 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`UserRoleID`, `name`, `login`, `password`, `role`) VALUES
-(12, 'kerim', 'gr414_shekab', 'd1f590a069552188d965d22f8fe1b8eb', 'employee'),
 (13, 'admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin'),
-(22, 'oisefhj', 'seifhshf', '8064310135008d44833579764ef3ff6d', 'employee');
+(28, 'asd', 'asd', '7815696ecbf1c96e6894b779456d330e', 'employee'),
+(29, 'нефор', 'нефор', 'b592ad20e034eaeeaae5261943ef32b4', 'employee');
 
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `compounds`
+--
+ALTER TABLE `compounds`
+  ADD PRIMARY KEY (`CompoundID`);
 
 --
 -- Индексы таблицы `departments`
@@ -152,7 +177,8 @@ ALTER TABLE `employees`
   ADD PRIMARY KEY (`EmployeeID`),
   ADD UNIQUE KEY `UserRoleID` (`UserRoleID`),
   ADD KEY `DepartmentID` (`DepartmentID`),
-  ADD KEY `PositionID` (`PositionID`);
+  ADD KEY `PositionID` (`PositionID`),
+  ADD KEY `CompoundID` (`CompoundID`);
 
 --
 -- Индексы таблицы `positions`
@@ -178,6 +204,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `compounds`
+--
+ALTER TABLE `compounds`
+  MODIFY `CompoundID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT для таблицы `departments`
 --
 ALTER TABLE `departments`
@@ -187,13 +219,13 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT для таблицы `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `EmployeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT для таблицы `positions`
 --
 ALTER TABLE `positions`
-  MODIFY `PositionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `PositionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `posts`
@@ -205,7 +237,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserRoleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `UserRoleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -216,7 +248,8 @@ ALTER TABLE `users`
 --
 ALTER TABLE `employees`
   ADD CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`DepartmentID`) REFERENCES `departments` (`DepartmentID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `employees_ibfk_4` FOREIGN KEY (`UserRoleID`) REFERENCES `users` (`UserRoleID`);
+  ADD CONSTRAINT `employees_ibfk_4` FOREIGN KEY (`UserRoleID`) REFERENCES `users` (`UserRoleID`),
+  ADD CONSTRAINT `employees_ibfk_5` FOREIGN KEY (`CompoundID`) REFERENCES `compounds` (`CompoundID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
