@@ -8,6 +8,7 @@ return [
    ],
    'routeAppMiddleware'=>[
       'trim' => \Middlewares\TrimMiddleware::class,
+      'session' => \Middlewares\SessionMiddleware::class,
       'specialChars' => \Middlewares\SpecialCharsMiddleware::class,
       'csrf' => \Middlewares\CSRFMiddleware::class,
    ],
